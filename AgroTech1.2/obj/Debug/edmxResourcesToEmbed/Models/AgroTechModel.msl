@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AgroTechModelStoreContainer" CdmEntityContainer="AgroTechEntities">
+    <EntitySetMapping Name="tblATNodeDatas">
+      <EntityTypeMapping TypeName="AgroTechModel.tblATNodeData">
+        <MappingFragment StoreEntitySet="tblATNodeData">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="node" ColumnName="node" />
+          <ScalarProperty Name="sensor" ColumnName="sensor" />
+          <ScalarProperty Name="avg_value" ColumnName="avg_value" />
+          <ScalarProperty Name="start_time" ColumnName="start_time" />
+          <ScalarProperty Name="end_time" ColumnName="end_time" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblATNodes">
+      <EntityTypeMapping TypeName="AgroTechModel.tblATNode">
+        <MappingFragment StoreEntitySet="tblATNodes">
+          <ScalarProperty Name="node_id" ColumnName="node_id" />
+          <ScalarProperty Name="node_name" ColumnName="node_name" />
+          <ScalarProperty Name="node_type" ColumnName="node_type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblATNodesSensorsConnections">
+      <EntityTypeMapping TypeName="AgroTechModel.tblATNodesSensorsConnection">
+        <MappingFragment StoreEntitySet="tblATNodesSensorsConnection">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="node_id" ColumnName="node_id" />
+          <ScalarProperty Name="sensor_id" ColumnName="sensor_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblATPlants">
+      <EntityTypeMapping TypeName="AgroTechModel.tblATPlant">
+        <MappingFragment StoreEntitySet="tblATPlants">
+          <ScalarProperty Name="plant_id" ColumnName="plant_id" />
+          <ScalarProperty Name="plant_name" ColumnName="plant_name" />
+          <ScalarProperty Name="node_id" ColumnName="node_id" />
+          <ScalarProperty Name="img" ColumnName="img" />
+          <ScalarProperty Name="details" ColumnName="details" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblATSensors">
+      <EntityTypeMapping TypeName="AgroTechModel.tblATSensor">
+        <MappingFragment StoreEntitySet="tblATSensors">
+          <ScalarProperty Name="sensor_id" ColumnName="sensor_id" />
+          <ScalarProperty Name="sensor_type" ColumnName="sensor_type" />
+          <ScalarProperty Name="measuring_unit" ColumnName="measuring_unit" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viATNodesSensors">
+      <EntityTypeMapping TypeName="AgroTechModel.viATNodesSensor">
+        <MappingFragment StoreEntitySet="viATNodesSensors">
+          <ScalarProperty Name="node_name" ColumnName="node_name" />
+          <ScalarProperty Name="node_type" ColumnName="node_type" />
+          <ScalarProperty Name="sensor_type" ColumnName="sensor_type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viATAllNodesDatas">
+      <EntityTypeMapping TypeName="AgroTechModel.viATAllNodesData">
+        <MappingFragment StoreEntitySet="viATAllNodesData">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="End_time" ColumnName="End time" />
+          <ScalarProperty Name="Start_time" ColumnName="Start time" />
+          <ScalarProperty Name="measuring_unit" ColumnName="measuring_unit" />
+          <ScalarProperty Name="avg_value" ColumnName="avg_value" />
+          <ScalarProperty Name="sensor" ColumnName="sensor" />
+          <ScalarProperty Name="node" ColumnName="node" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="SingleSensorData" FunctionName="AgroTechModel.Store.sp_ATNodeDataSingleSensor">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AgroTechModel.sp_ATNodeDataSingleSensor_Result">
+          <ScalarProperty Name="node" ColumnName="node" />
+          <ScalarProperty Name="sensor" ColumnName="sensor" />
+          <ScalarProperty Name="avg_value" ColumnName="avg_value" />
+          <ScalarProperty Name="time" ColumnName="time" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

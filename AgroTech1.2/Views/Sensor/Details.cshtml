@@ -1,0 +1,33 @@
+﻿@model AgroTech1._2.Models.tblATSensor
+
+@{
+    ViewBag.Title = "Sensor Details";
+}
+
+<h2>Sensor details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.sensor_type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sensor_type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.measuring_unit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.measuring_unit)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.sensor_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

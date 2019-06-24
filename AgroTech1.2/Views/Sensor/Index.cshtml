@@ -1,0 +1,40 @@
+﻿@model IEnumerable<AgroTech1._2.Models.tblATSensor>
+
+@{
+    ViewBag.Title = "Sensor";
+}
+
+<h2>Sensors</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.sensor_type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.measuring_unit)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.sensor_type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.measuring_unit)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.sensor_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.sensor_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.sensor_id })
+        </td>
+    </tr>
+}
+
+</table>

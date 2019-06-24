@@ -1,0 +1,14 @@
+﻿@if ((string)TempData["code"] != "-1" && TempData["notification"] != null)
+{
+    <br />
+    <div class="alert alert-success text-center" role="alert" id="alertBox">
+        @Html.Raw(TempData["notification"])
+    </div>
+}
+else if (TempData["notification"] != null)
+{
+    <br />
+    <div class="alert alert-danger text-center" role="alert" id="alertBox">
+        @Html.Raw(TempData["notification"])
+    </div>
+}

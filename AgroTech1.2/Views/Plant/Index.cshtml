@@ -1,0 +1,56 @@
+﻿@model IEnumerable<AgroTech1._2.Models.tblATPlant>
+
+@{
+    ViewBag.Title = "Plants";
+}
+
+<h2>Plants</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table" style="height:100%">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.plant_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.img)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.details)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tblATNode.node_name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td class="align-middle">
+            @Html.DisplayFor(modelItem => item.plant_name)
+        </td>
+        <td class="align-middle">
+            @{
+                var base64 = Convert.ToBase64String(item.img);
+                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+            }
+
+            <img src="@imgSrc" class="img-responsive" style="height: auto; width: 200px; max-height: 200px"/>
+        </td>
+        <td class="align-middle">
+            @Html.DisplayFor(modelItem => item.details)
+        </td>
+        <td class="align-middle">
+            @Html.DisplayFor(modelItem => item.tblATNode.node_name)
+        </td>
+        <td class="align-middle">
+            @Html.ActionLink("Edit", "Edit", new { id=item.plant_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.plant_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.plant_id })
+        </td>
+    </tr>
+}
+
+</table>

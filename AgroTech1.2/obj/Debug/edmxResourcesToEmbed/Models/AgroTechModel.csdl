@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AgroTechModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="tblATNodeData">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="node" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="sensor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="avg_value" Type="Decimal" Precision="20" Scale="4" />
+    <Property Name="start_time" Type="DateTime" Precision="3" />
+    <Property Name="end_time" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="tblATNode">
+    <Key>
+      <PropertyRef Name="node_id" />
+    </Key>
+    <Property Name="node_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="node_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="node_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tblATNodesSensorsConnections" Relationship="Self.FK_tblATNodesSensorsConnection_tblATNodes" FromRole="tblATNodes" ToRole="tblATNodesSensorsConnection" />
+    <NavigationProperty Name="tblATPlants" Relationship="Self.FK_tblATPlants_tblATNodes" FromRole="tblATNodes" ToRole="tblATPlants" />
+  </EntityType>
+  <EntityType Name="tblATNodesSensorsConnection">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="node_id" Type="Int64" />
+    <Property Name="sensor_id" Type="Int64" />
+    <NavigationProperty Name="tblATNode" Relationship="Self.FK_tblATNodesSensorsConnection_tblATNodes" FromRole="tblATNodesSensorsConnection" ToRole="tblATNodes" />
+    <NavigationProperty Name="tblATSensor" Relationship="Self.FK_tblATNodesSensorsConnection_tblATSensors" FromRole="tblATNodesSensorsConnection" ToRole="tblATSensors" />
+  </EntityType>
+  <EntityType Name="tblATPlant">
+    <Key>
+      <PropertyRef Name="plant_id" />
+    </Key>
+    <Property Name="plant_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="plant_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="node_id" Type="Int64" />
+    <Property Name="img" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="details" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tblATNode" Relationship="Self.FK_tblATPlants_tblATNodes" FromRole="tblATPlants" ToRole="tblATNodes" />
+  </EntityType>
+  <EntityType Name="tblATSensor">
+    <Key>
+      <PropertyRef Name="sensor_id" />
+    </Key>
+    <Property Name="sensor_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="sensor_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="measuring_unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tblATNodesSensorsConnections" Relationship="Self.FK_tblATNodesSensorsConnection_tblATSensors" FromRole="tblATSensors" ToRole="tblATNodesSensorsConnection" />
+  </EntityType>
+  <EntityType Name="viATNodesSensor">
+    <Key>
+      <PropertyRef Name="node_name" />
+      <PropertyRef Name="sensor_type" />
+    </Key>
+    <Property Name="node_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="node_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="sensor_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_tblATNodesSensorsConnection_tblATNodes">
+    <End Role="tblATNodes" Type="Self.tblATNode" Multiplicity="0..1" />
+    <End Role="tblATNodesSensorsConnection" Type="Self.tblATNodesSensorsConnection" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblATNodes">
+        <PropertyRef Name="node_id" />
+      </Principal>
+      <Dependent Role="tblATNodesSensorsConnection">
+        <PropertyRef Name="node_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblATPlants_tblATNodes">
+    <End Role="tblATNodes" Type="Self.tblATNode" Multiplicity="0..1" />
+    <End Role="tblATPlants" Type="Self.tblATPlant" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblATNodes">
+        <PropertyRef Name="node_id" />
+      </Principal>
+      <Dependent Role="tblATPlants">
+        <PropertyRef Name="node_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblATNodesSensorsConnection_tblATSensors">
+    <End Role="tblATSensors" Type="Self.tblATSensor" Multiplicity="0..1" />
+    <End Role="tblATNodesSensorsConnection" Type="Self.tblATNodesSensorsConnection" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblATSensors">
+        <PropertyRef Name="sensor_id" />
+      </Principal>
+      <Dependent Role="tblATNodesSensorsConnection">
+        <PropertyRef Name="sensor_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AgroTechEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tblATNodeDatas" EntityType="Self.tblATNodeData" />
+    <EntitySet Name="tblATNodes" EntityType="Self.tblATNode" />
+    <EntitySet Name="tblATNodesSensorsConnections" EntityType="Self.tblATNodesSensorsConnection" />
+    <EntitySet Name="tblATPlants" EntityType="Self.tblATPlant" />
+    <EntitySet Name="tblATSensors" EntityType="Self.tblATSensor" />
+    <EntitySet Name="viATNodesSensors" EntityType="Self.viATNodesSensor" />
+    <AssociationSet Name="FK_tblATNodesSensorsConnection_tblATNodes" Association="Self.FK_tblATNodesSensorsConnection_tblATNodes">
+      <End Role="tblATNodes" EntitySet="tblATNodes" />
+      <End Role="tblATNodesSensorsConnection" EntitySet="tblATNodesSensorsConnections" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblATPlants_tblATNodes" Association="Self.FK_tblATPlants_tblATNodes">
+      <End Role="tblATNodes" EntitySet="tblATNodes" />
+      <End Role="tblATPlants" EntitySet="tblATPlants" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblATNodesSensorsConnection_tblATSensors" Association="Self.FK_tblATNodesSensorsConnection_tblATSensors">
+      <End Role="tblATSensors" EntitySet="tblATSensors" />
+      <End Role="tblATNodesSensorsConnection" EntitySet="tblATNodesSensorsConnections" />
+    </AssociationSet>
+    <EntitySet Name="viATAllNodesDatas" EntityType="AgroTechModel.viATAllNodesData" />
+    <FunctionImport Name="SingleSensorData" ReturnType="Collection(AgroTechModel.sp_ATNodeDataSingleSensor_Result)">
+      <Parameter Name="node" Mode="In" Type="String" />
+      <Parameter Name="sensor" Mode="In" Type="String" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="sp_ATNodeDataSingleSensor_Result">
+    <Property Type="String" Name="node" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="sensor" Nullable="true" MaxLength="50" />
+    <Property Type="Decimal" Name="avg_value" Nullable="true" Precision="20" Scale="4" />
+    <Property Type="String" Name="time" Nullable="true" MaxLength="30" />
+  </ComplexType>
+  <EntityType Name="viATAllNodesData">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="node" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="sensor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="avg_value" Type="Decimal" Precision="20" Scale="4" />
+    <Property Name="measuring_unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Start_time" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="End_time" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="id" Type="Int64" Nullable="false" />
+  </EntityType>
+</Schema>

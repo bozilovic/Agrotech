@@ -1,0 +1,41 @@
+﻿@model AgroTech1._2.Models.tblATNodeData
+
+@{
+     ViewBag.Title = "Node Data";
+}
+
+
+<form method="post" action="@Url.Action("SingleSensor", "NodeDatas")">
+    <div class="form-horizontal">
+        <h2>Data </h2>
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(model => model.node, "node", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("node", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.node, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.sensor, "sensor", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("sensor", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.sensor, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-12">
+                <input type="submit" value="Show data" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+    
+ <div class="col-md-10">
+     @Html.Partial("SingleSensor")
+ </div>  
+
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }

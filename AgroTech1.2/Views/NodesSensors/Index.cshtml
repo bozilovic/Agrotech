@@ -1,0 +1,39 @@
+﻿@model IEnumerable<AgroTech1._2.Models.viATNodesSensor>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Node-Sensor connections</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", "NodesSensorsConnections")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.node_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.node_type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sensor_type)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.node_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.node_type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sensor_type)
+        </td>
+    </tr>
+}
+
+</table>

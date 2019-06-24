@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="07d7ccf23e1646c6bcf08ae2025e4e49" Name="Diagram1">
+        <EntityTypeShape EntityType="AgroTechModel.tblATNodeData" Width="1.5" PointX="3" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AgroTechModel.tblATNode" Width="1.5" PointX="5.375" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AgroTechModel.tblATNodesSensorsConnection" Width="1.5" PointX="3" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="AgroTechModel.tblATPlant" Width="1.5" PointX="7.75" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AgroTechModel.tblATSensor" Width="1.5" PointX="0.5" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="AgroTechModel.viATNodesSensor" Width="2.25" PointX="5.125" PointY="0.5" IsExpanded="true" />
+        <AssociationConnector Association="AgroTechModel.FK_tblATNodesSensorsConnection_tblATNodes" ManuallyRouted="false" />
+        <AssociationConnector Association="AgroTechModel.FK_tblATPlants_tblATNodes" ManuallyRouted="false" />
+        <AssociationConnector Association="AgroTechModel.FK_tblATNodesSensorsConnection_tblATSensors" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="AgroTechModel.viATAllNodesData" Width="1.75" PointX="0.5" PointY="0.5" IsExpanded="true" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

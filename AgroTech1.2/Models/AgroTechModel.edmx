@@ -1,0 +1,409 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AgroTechModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblATNodeData">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="node" Type="nvarchar" MaxLength="50" />
+          <Property Name="sensor" Type="nvarchar" MaxLength="50" />
+          <Property Name="avg_value" Type="numeric" Precision="20" Scale="4" />
+          <Property Name="start_time" Type="datetime" />
+          <Property Name="end_time" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblATNodes">
+          <Key>
+            <PropertyRef Name="node_id" />
+          </Key>
+          <Property Name="node_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="node_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="node_type" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblATNodesSensorsConnection">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="node_id" Type="bigint" />
+          <Property Name="sensor_id" Type="bigint" />
+        </EntityType>
+        <EntityType Name="tblATPlants">
+          <Key>
+            <PropertyRef Name="plant_id" />
+          </Key>
+          <Property Name="plant_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="plant_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="node_id" Type="bigint" />
+          <Property Name="img" Type="varbinary(max)" />
+          <Property Name="details" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="tblATSensors">
+          <Key>
+            <PropertyRef Name="sensor_id" />
+          </Key>
+          <Property Name="sensor_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sensor_type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="measuring_unit" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'eMES_AgroTech.dbo.viATAllNodesData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="viATAllNodesData">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="node" Type="nvarchar" MaxLength="50" />
+          <Property Name="sensor" Type="nvarchar" MaxLength="50" />
+          <Property Name="avg_value" Type="numeric" Precision="20" Scale="4" />
+          <Property Name="measuring_unit" Type="nvarchar" MaxLength="50" />
+          <Property Name="Start time" Type="varchar" MaxLength="30" />
+          <Property Name="End time" Type="varchar" MaxLength="30" />
+          <Property Name="id" Type="bigint" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'eMES_AgroTech.dbo.viATNodesSensors' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="viATNodesSensors">
+          <Key>
+            <PropertyRef Name="node_name" />
+            <PropertyRef Name="sensor_type" />
+          </Key>
+          <Property Name="node_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="node_type" Type="nvarchar" MaxLength="50" />
+          <Property Name="sensor_type" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_tblATNodesSensorsConnection_tblATNodes">
+          <End Role="tblATNodes" Type="Self.tblATNodes" Multiplicity="0..1" />
+          <End Role="tblATNodesSensorsConnection" Type="Self.tblATNodesSensorsConnection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblATNodes">
+              <PropertyRef Name="node_id" />
+            </Principal>
+            <Dependent Role="tblATNodesSensorsConnection">
+              <PropertyRef Name="node_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblATNodesSensorsConnection_tblATSensors">
+          <End Role="tblATSensors" Type="Self.tblATSensors" Multiplicity="0..1" />
+          <End Role="tblATNodesSensorsConnection" Type="Self.tblATNodesSensorsConnection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblATSensors">
+              <PropertyRef Name="sensor_id" />
+            </Principal>
+            <Dependent Role="tblATNodesSensorsConnection">
+              <PropertyRef Name="sensor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblATPlants_tblATNodes">
+          <End Role="tblATNodes" Type="Self.tblATNodes" Multiplicity="0..1" />
+          <End Role="tblATPlants" Type="Self.tblATPlants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblATNodes">
+              <PropertyRef Name="node_id" />
+            </Principal>
+            <Dependent Role="tblATPlants">
+              <PropertyRef Name="node_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="sp_ATNodeDataSingleSensor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="node" Type="nvarchar" Mode="In" />
+          <Parameter Name="sensor" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="AgroTechModelStoreContainer">
+          <EntitySet Name="tblATNodeData" EntityType="Self.tblATNodeData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblATNodes" EntityType="Self.tblATNodes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblATNodesSensorsConnection" EntityType="Self.tblATNodesSensorsConnection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblATPlants" EntityType="Self.tblATPlants" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblATSensors" EntityType="Self.tblATSensors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="viATAllNodesData" EntityType="Self.viATAllNodesData" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [viATAllNodesData].[node] AS [node], 
+    [viATAllNodesData].[sensor] AS [sensor], 
+    [viATAllNodesData].[avg_value] AS [avg_value], 
+    [viATAllNodesData].[measuring_unit] AS [measuring_unit], 
+    [viATAllNodesData].[Start time] AS [Start time], 
+    [viATAllNodesData].[End time] AS [End time], 
+    [viATAllNodesData].[id] AS [id]
+    FROM [dbo].[viATAllNodesData] AS [viATAllNodesData]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="viATNodesSensors" EntityType="Self.viATNodesSensors" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [viATNodesSensors].[node_name] AS [node_name], 
+    [viATNodesSensors].[node_type] AS [node_type], 
+    [viATNodesSensors].[sensor_type] AS [sensor_type]
+    FROM [dbo].[viATNodesSensors] AS [viATNodesSensors]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_tblATNodesSensorsConnection_tblATNodes" Association="Self.FK_tblATNodesSensorsConnection_tblATNodes">
+            <End Role="tblATNodes" EntitySet="tblATNodes" />
+            <End Role="tblATNodesSensorsConnection" EntitySet="tblATNodesSensorsConnection" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblATNodesSensorsConnection_tblATSensors" Association="Self.FK_tblATNodesSensorsConnection_tblATSensors">
+            <End Role="tblATSensors" EntitySet="tblATSensors" />
+            <End Role="tblATNodesSensorsConnection" EntitySet="tblATNodesSensorsConnection" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblATPlants_tblATNodes" Association="Self.FK_tblATPlants_tblATNodes">
+            <End Role="tblATNodes" EntitySet="tblATNodes" />
+            <End Role="tblATPlants" EntitySet="tblATPlants" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AgroTechModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblATNodeData">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="node" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sensor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="avg_value" Type="Decimal" Precision="20" Scale="4" />
+          <Property Name="start_time" Type="DateTime" Precision="3" />
+          <Property Name="end_time" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tblATNode">
+          <Key>
+            <PropertyRef Name="node_id" />
+          </Key>
+          <Property Name="node_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="node_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="node_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblATNodesSensorsConnections" Relationship="Self.FK_tblATNodesSensorsConnection_tblATNodes" FromRole="tblATNodes" ToRole="tblATNodesSensorsConnection" />
+          <NavigationProperty Name="tblATPlants" Relationship="Self.FK_tblATPlants_tblATNodes" FromRole="tblATNodes" ToRole="tblATPlants" />
+        </EntityType>
+        <EntityType Name="tblATNodesSensorsConnection">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="node_id" Type="Int64" />
+          <Property Name="sensor_id" Type="Int64" />
+          <NavigationProperty Name="tblATNode" Relationship="Self.FK_tblATNodesSensorsConnection_tblATNodes" FromRole="tblATNodesSensorsConnection" ToRole="tblATNodes" />
+          <NavigationProperty Name="tblATSensor" Relationship="Self.FK_tblATNodesSensorsConnection_tblATSensors" FromRole="tblATNodesSensorsConnection" ToRole="tblATSensors" />
+        </EntityType>
+        <EntityType Name="tblATPlant">
+          <Key>
+            <PropertyRef Name="plant_id" />
+          </Key>
+          <Property Name="plant_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="plant_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="node_id" Type="Int64" />
+          <Property Name="img" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="details" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblATNode" Relationship="Self.FK_tblATPlants_tblATNodes" FromRole="tblATPlants" ToRole="tblATNodes" />
+        </EntityType>
+        <EntityType Name="tblATSensor">
+          <Key>
+            <PropertyRef Name="sensor_id" />
+          </Key>
+          <Property Name="sensor_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sensor_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="measuring_unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblATNodesSensorsConnections" Relationship="Self.FK_tblATNodesSensorsConnection_tblATSensors" FromRole="tblATSensors" ToRole="tblATNodesSensorsConnection" />
+        </EntityType>
+        <EntityType Name="viATNodesSensor">
+          <Key>
+            <PropertyRef Name="node_name" />
+            <PropertyRef Name="sensor_type" />
+          </Key>
+          <Property Name="node_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="node_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sensor_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_tblATNodesSensorsConnection_tblATNodes">
+          <End Role="tblATNodes" Type="Self.tblATNode" Multiplicity="0..1" />
+          <End Role="tblATNodesSensorsConnection" Type="Self.tblATNodesSensorsConnection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblATNodes">
+              <PropertyRef Name="node_id" />
+            </Principal>
+            <Dependent Role="tblATNodesSensorsConnection">
+              <PropertyRef Name="node_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblATPlants_tblATNodes">
+          <End Role="tblATNodes" Type="Self.tblATNode" Multiplicity="0..1" />
+          <End Role="tblATPlants" Type="Self.tblATPlant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblATNodes">
+              <PropertyRef Name="node_id" />
+            </Principal>
+            <Dependent Role="tblATPlants">
+              <PropertyRef Name="node_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblATNodesSensorsConnection_tblATSensors">
+          <End Role="tblATSensors" Type="Self.tblATSensor" Multiplicity="0..1" />
+          <End Role="tblATNodesSensorsConnection" Type="Self.tblATNodesSensorsConnection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblATSensors">
+              <PropertyRef Name="sensor_id" />
+            </Principal>
+            <Dependent Role="tblATNodesSensorsConnection">
+              <PropertyRef Name="sensor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AgroTechEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblATNodeDatas" EntityType="Self.tblATNodeData" />
+          <EntitySet Name="tblATNodes" EntityType="Self.tblATNode" />
+          <EntitySet Name="tblATNodesSensorsConnections" EntityType="Self.tblATNodesSensorsConnection" />
+          <EntitySet Name="tblATPlants" EntityType="Self.tblATPlant" />
+          <EntitySet Name="tblATSensors" EntityType="Self.tblATSensor" />
+          <EntitySet Name="viATNodesSensors" EntityType="Self.viATNodesSensor" />
+          <AssociationSet Name="FK_tblATNodesSensorsConnection_tblATNodes" Association="Self.FK_tblATNodesSensorsConnection_tblATNodes">
+            <End Role="tblATNodes" EntitySet="tblATNodes" />
+            <End Role="tblATNodesSensorsConnection" EntitySet="tblATNodesSensorsConnections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblATPlants_tblATNodes" Association="Self.FK_tblATPlants_tblATNodes">
+            <End Role="tblATNodes" EntitySet="tblATNodes" />
+            <End Role="tblATPlants" EntitySet="tblATPlants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblATNodesSensorsConnection_tblATSensors" Association="Self.FK_tblATNodesSensorsConnection_tblATSensors">
+            <End Role="tblATSensors" EntitySet="tblATSensors" />
+            <End Role="tblATNodesSensorsConnection" EntitySet="tblATNodesSensorsConnections" />
+          </AssociationSet>
+          <EntitySet Name="viATAllNodesDatas" EntityType="AgroTechModel.viATAllNodesData" />
+          <FunctionImport Name="SingleSensorData" ReturnType="Collection(AgroTechModel.sp_ATNodeDataSingleSensor_Result)">
+            <Parameter Name="node" Mode="In" Type="String" />
+            <Parameter Name="sensor" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="sp_ATNodeDataSingleSensor_Result">
+          <Property Type="String" Name="node" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="sensor" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="avg_value" Nullable="true" Precision="20" Scale="4" />
+          <Property Type="String" Name="time" Nullable="true" MaxLength="30" />
+        </ComplexType>
+        <EntityType Name="viATAllNodesData">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="node" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sensor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="avg_value" Type="Decimal" Precision="20" Scale="4" />
+          <Property Name="measuring_unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Start_time" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="End_time" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="id" Type="Int64" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AgroTechModelStoreContainer" CdmEntityContainer="AgroTechEntities">
+          <EntitySetMapping Name="tblATNodeDatas">
+            <EntityTypeMapping TypeName="AgroTechModel.tblATNodeData">
+              <MappingFragment StoreEntitySet="tblATNodeData">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="node" ColumnName="node" />
+                <ScalarProperty Name="sensor" ColumnName="sensor" />
+                <ScalarProperty Name="avg_value" ColumnName="avg_value" />
+                <ScalarProperty Name="start_time" ColumnName="start_time" />
+                <ScalarProperty Name="end_time" ColumnName="end_time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblATNodes">
+            <EntityTypeMapping TypeName="AgroTechModel.tblATNode">
+              <MappingFragment StoreEntitySet="tblATNodes">
+                <ScalarProperty Name="node_id" ColumnName="node_id" />
+                <ScalarProperty Name="node_name" ColumnName="node_name" />
+                <ScalarProperty Name="node_type" ColumnName="node_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblATNodesSensorsConnections">
+            <EntityTypeMapping TypeName="AgroTechModel.tblATNodesSensorsConnection">
+              <MappingFragment StoreEntitySet="tblATNodesSensorsConnection">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="node_id" ColumnName="node_id" />
+                <ScalarProperty Name="sensor_id" ColumnName="sensor_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblATPlants">
+            <EntityTypeMapping TypeName="AgroTechModel.tblATPlant">
+              <MappingFragment StoreEntitySet="tblATPlants">
+                <ScalarProperty Name="plant_id" ColumnName="plant_id" />
+                <ScalarProperty Name="plant_name" ColumnName="plant_name" />
+                <ScalarProperty Name="node_id" ColumnName="node_id" />
+                <ScalarProperty Name="img" ColumnName="img" />
+                <ScalarProperty Name="details" ColumnName="details" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblATSensors">
+            <EntityTypeMapping TypeName="AgroTechModel.tblATSensor">
+              <MappingFragment StoreEntitySet="tblATSensors">
+                <ScalarProperty Name="sensor_id" ColumnName="sensor_id" />
+                <ScalarProperty Name="sensor_type" ColumnName="sensor_type" />
+                <ScalarProperty Name="measuring_unit" ColumnName="measuring_unit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="viATNodesSensors">
+            <EntityTypeMapping TypeName="AgroTechModel.viATNodesSensor">
+              <MappingFragment StoreEntitySet="viATNodesSensors">
+                <ScalarProperty Name="node_name" ColumnName="node_name" />
+                <ScalarProperty Name="node_type" ColumnName="node_type" />
+                <ScalarProperty Name="sensor_type" ColumnName="sensor_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="viATAllNodesDatas">
+            <EntityTypeMapping TypeName="AgroTechModel.viATAllNodesData">
+              <MappingFragment StoreEntitySet="viATAllNodesData">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="End_time" ColumnName="End time" />
+                <ScalarProperty Name="Start_time" ColumnName="Start time" />
+                <ScalarProperty Name="measuring_unit" ColumnName="measuring_unit" />
+                <ScalarProperty Name="avg_value" ColumnName="avg_value" />
+                <ScalarProperty Name="sensor" ColumnName="sensor" />
+                <ScalarProperty Name="node" ColumnName="node" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SingleSensorData" FunctionName="AgroTechModel.Store.sp_ATNodeDataSingleSensor">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AgroTechModel.sp_ATNodeDataSingleSensor_Result">
+                <ScalarProperty Name="node" ColumnName="node" />
+                <ScalarProperty Name="sensor" ColumnName="sensor" />
+                <ScalarProperty Name="avg_value" ColumnName="avg_value" />
+                <ScalarProperty Name="time" ColumnName="time" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

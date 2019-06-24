@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "Home page";
+}
+
+<h2>WELCOME TO <b>AgroTech 1.4</b></h2>
+<hr />
+<p>
+    AgroTech provides the farmers essential information to take out the best quality of vegetable crops.
+    That is why we offer a product that is cost-effective with a user friendly technology so You can easily optimize
+    field operations and plant needs. We ask You to join us and help us grow together as your productivity of
+    the entire farming cycle.
+</p>
+<div class="home_main">
+    <ul>
+        <li>
+            <div class="menu_item">
+                <a href="@Url.Action("Index", "Node")" id="node" onclick="changeImage(this.id)">
+                    <div class="inner_item">
+                        <img src="~/Content/img/node.png">
+                        <h3 id="title">Nodes</h3>
+                        <p>Informations about all nodes. Connect new sensors to nodes.</p>
+                    </div>
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class="menu_item">
+                <a href="@Url.Action("Index", "Plant")">
+                    <div class="inner_item">
+                        <img src="~/Content/img/plant.png">
+                        <h3 id="title">Plants</h3>
+                        <p>Click to see list of all plants, arange it, add new ones or delete some of them.</p>
+                    </div>
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class="menu_item">
+                <a href="@Url.Action("Index", "Sensor")">
+                    <div class="inner_item">
+                        <img src="~/Content/img/sensor.png">
+                        <h3 id="title">Sensors</h3>
+                        <p>List of sensors, their type, units and more...</p>
+                    </div>
+                </a>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<script>
+    function changeImage(img) {
+
+        document.body.style.backgroundImage = 'url(~/Content/img/' + img + '.png)';
+
+    }
+</script>

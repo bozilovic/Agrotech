@@ -1,0 +1,43 @@
+﻿@model IEnumerable<AgroTech1._2.Models.tblATNode>
+
+@{
+    ViewBag.Title = "Node";
+}
+
+<h2>Nodes</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.node_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.node_type)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.node_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.node_type)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.node_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.node_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.node_id })
+        </td>
+    </tr>
+}
+
+</table>
+
+<p>
+    @Html.ActionLink("Add node sensor connection", "Index", "NodesSensors")
+</p>

@@ -1,0 +1,39 @@
+﻿@model IEnumerable < AgroTech1._2.Models.sp_ATNodeDataSingleSensor_Result>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.node)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sensor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.avg_value)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.time)
+        </th>
+
+    </tr>
+    @if ( Model != null) {
+    foreach (var item in Model) {
+
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.node)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sensor)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.avg_value)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.time)
+        </td>
+
+    </tr>
+         }
+    }
+</table>

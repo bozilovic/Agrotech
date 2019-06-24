@@ -1,0 +1,50 @@
+﻿@model AgroTech1._2.Models.tblATPlant
+
+@{
+    ViewBag.Title = "Plant Details";
+}
+
+<h2>Details of plants</h2>
+
+<div>
+
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.plant_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.plant_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.img)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.img)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.details)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.details)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblATNode.node_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblATNode.node_name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.plant_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<AgroTech1._2.Models.viATAllNodesData>
+
+@{
+    ViewBag.Title = "All data";
+}
+
+<h2>All data</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.node)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sensor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.avg_value)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.measuring_unit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Start_time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.End_time)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.node)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.sensor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.avg_value)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.measuring_unit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Start_time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.End_time)
+            </td>
+
+        </tr>
+    }
+
+</table>

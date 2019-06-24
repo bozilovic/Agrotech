@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AgroTechModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tblATNodeData">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="node" Type="nvarchar" MaxLength="50" />
+    <Property Name="sensor" Type="nvarchar" MaxLength="50" />
+    <Property Name="avg_value" Type="numeric" Precision="20" Scale="4" />
+    <Property Name="start_time" Type="datetime" />
+    <Property Name="end_time" Type="datetime" />
+  </EntityType>
+  <EntityType Name="tblATNodes">
+    <Key>
+      <PropertyRef Name="node_id" />
+    </Key>
+    <Property Name="node_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="node_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="node_type" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblATNodesSensorsConnection">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="node_id" Type="bigint" />
+    <Property Name="sensor_id" Type="bigint" />
+  </EntityType>
+  <EntityType Name="tblATPlants">
+    <Key>
+      <PropertyRef Name="plant_id" />
+    </Key>
+    <Property Name="plant_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="plant_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="node_id" Type="bigint" />
+    <Property Name="img" Type="varbinary(max)" />
+    <Property Name="details" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="tblATSensors">
+    <Key>
+      <PropertyRef Name="sensor_id" />
+    </Key>
+    <Property Name="sensor_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="sensor_type" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="measuring_unit" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'eMES_AgroTech.dbo.viATAllNodesData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="viATAllNodesData">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="node" Type="nvarchar" MaxLength="50" />
+    <Property Name="sensor" Type="nvarchar" MaxLength="50" />
+    <Property Name="avg_value" Type="numeric" Precision="20" Scale="4" />
+    <Property Name="measuring_unit" Type="nvarchar" MaxLength="50" />
+    <Property Name="Start time" Type="varchar" MaxLength="30" />
+    <Property Name="End time" Type="varchar" MaxLength="30" />
+    <Property Name="id" Type="bigint" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'eMES_AgroTech.dbo.viATNodesSensors' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="viATNodesSensors">
+    <Key>
+      <PropertyRef Name="node_name" />
+      <PropertyRef Name="sensor_type" />
+    </Key>
+    <Property Name="node_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="node_type" Type="nvarchar" MaxLength="50" />
+    <Property Name="sensor_type" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_tblATNodesSensorsConnection_tblATNodes">
+    <End Role="tblATNodes" Type="Self.tblATNodes" Multiplicity="0..1" />
+    <End Role="tblATNodesSensorsConnection" Type="Self.tblATNodesSensorsConnection" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblATNodes">
+        <PropertyRef Name="node_id" />
+      </Principal>
+      <Dependent Role="tblATNodesSensorsConnection">
+        <PropertyRef Name="node_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblATNodesSensorsConnection_tblATSensors">
+    <End Role="tblATSensors" Type="Self.tblATSensors" Multiplicity="0..1" />
+    <End Role="tblATNodesSensorsConnection" Type="Self.tblATNodesSensorsConnection" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblATSensors">
+        <PropertyRef Name="sensor_id" />
+      </Principal>
+      <Dependent Role="tblATNodesSensorsConnection">
+        <PropertyRef Name="sensor_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblATPlants_tblATNodes">
+    <End Role="tblATNodes" Type="Self.tblATNodes" Multiplicity="0..1" />
+    <End Role="tblATPlants" Type="Self.tblATPlants" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblATNodes">
+        <PropertyRef Name="node_id" />
+      </Principal>
+      <Dependent Role="tblATPlants">
+        <PropertyRef Name="node_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="sp_ATNodeDataSingleSensor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="node" Type="nvarchar" Mode="In" />
+    <Parameter Name="sensor" Type="nvarchar" Mode="In" />
+  </Function>
+  <EntityContainer Name="AgroTechModelStoreContainer">
+    <EntitySet Name="tblATNodeData" EntityType="Self.tblATNodeData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblATNodes" EntityType="Self.tblATNodes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblATNodesSensorsConnection" EntityType="Self.tblATNodesSensorsConnection" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblATPlants" EntityType="Self.tblATPlants" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblATSensors" EntityType="Self.tblATSensors" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="viATAllNodesData" EntityType="Self.viATAllNodesData" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [viATAllNodesData].[node] AS [node], 
+    [viATAllNodesData].[sensor] AS [sensor], 
+    [viATAllNodesData].[avg_value] AS [avg_value], 
+    [viATAllNodesData].[measuring_unit] AS [measuring_unit], 
+    [viATAllNodesData].[Start time] AS [Start time], 
+    [viATAllNodesData].[End time] AS [End time], 
+    [viATAllNodesData].[id] AS [id]
+    FROM [dbo].[viATAllNodesData] AS [viATAllNodesData]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="viATNodesSensors" EntityType="Self.viATNodesSensors" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [viATNodesSensors].[node_name] AS [node_name], 
+    [viATNodesSensors].[node_type] AS [node_type], 
+    [viATNodesSensors].[sensor_type] AS [sensor_type]
+    FROM [dbo].[viATNodesSensors] AS [viATNodesSensors]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_tblATNodesSensorsConnection_tblATNodes" Association="Self.FK_tblATNodesSensorsConnection_tblATNodes">
+      <End Role="tblATNodes" EntitySet="tblATNodes" />
+      <End Role="tblATNodesSensorsConnection" EntitySet="tblATNodesSensorsConnection" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblATNodesSensorsConnection_tblATSensors" Association="Self.FK_tblATNodesSensorsConnection_tblATSensors">
+      <End Role="tblATSensors" EntitySet="tblATSensors" />
+      <End Role="tblATNodesSensorsConnection" EntitySet="tblATNodesSensorsConnection" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblATPlants_tblATNodes" Association="Self.FK_tblATPlants_tblATNodes">
+      <End Role="tblATNodes" EntitySet="tblATNodes" />
+      <End Role="tblATPlants" EntitySet="tblATPlants" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
